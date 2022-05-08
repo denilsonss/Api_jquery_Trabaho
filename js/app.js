@@ -1,4 +1,4 @@
-const URL_API = "http://app.professordaniloalves.com.br";
+const URL_API = "https://app.professordaniloalves.com.br";
 
 function limpaCPF() {
     let cpf_com_ponto_e_traco = document.querySelector("#cadastroCpf").value;
@@ -123,7 +123,7 @@ function criarOption(valor, texto) {
 function popularEnderecoCadastro() {
     $(document).ready(function () {
 
-        $("#cadastroCep").blur(function () {
+       
 
             var cep = $(this).val().replace(/\D/g, '');
             if (cep != "") {
@@ -152,8 +152,7 @@ function popularEnderecoCadastro() {
                 limpa_formulário_cep();
             }
         });
-    });
-
+  
 }
 /* FIM PREENCHER ENDEREÇO */
 
