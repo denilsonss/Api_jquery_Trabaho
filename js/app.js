@@ -121,38 +121,29 @@ function criarOption(valor, texto) {
 
 /* PREENCHER ENDEREÇO*/
 function popularEnderecoCadastro() {
-    $(document).ready(function () {
+    const cep = limpaCEP();
+    const finalURL = `${URL_API}/api/v1/endereco/${cep}`;
 
-       
+    const validacep = /^[0-9]{8}$/;
 
-            var cep = $(this).val().replace(/\D/g, '');
-            if (cep != "") {
-
-                var validacep = /^[0-9]{8}$/;
-                if (validacep.test(cep)) {
-                    $.getJSON(URL_API + "/api/v1/endereco/{cep}" + cep, function (dados) {
-
-                        if (!("erro" in dados)) {
-
-                            $("#cadastroLogradouro").val(dados.logradouro);
-                            $("#cadastroCidade").val(dados.localidade);
-                            $("#cadastroUf").val(dados.uf);
-                        } else {
-
-                            limpa_formulário_cep();
-                            alert("CEP não encontrado.");
-                        }
-                    });
+    if (validacep.test(cep)) {
+        fetch(finalURL)
+            .then(response => {
+                return response.json();
+            })
+            .then(endereco => {
+                if ("message" in endereco) {
+                    alert(endereco.message)
                 } else {
-                    limpa_formulário_cep();
-                    alert("Formato de CEP inválido.");
+                    document.querySelector('#cadastroLogradouro').value = endereco.logradouro;
+                    document.querySelector('#cadastroCidade').value = endereco.localidade;
+                    document.querySelector('#cadastroUf').value = endereco.uf;
                 }
-            } else {
-
-                limpa_formulário_cep();
-            }
-        });
-  
+            }).catch(err => {
+                alert("Ocorreu um erro não tratado");
+                console.log(err);
+            });
+    }
 }
 /* FIM PREENCHER ENDEREÇO */
 
