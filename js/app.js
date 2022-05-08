@@ -127,22 +127,14 @@ function popularEnderecoCadastro() {
     const validacep = /^[0-9]{8}$/;
 
     if (validacep.test(cep)) {
-        fetch(finalURL)
-            .then(response => {
-                return response.json();
-            })
-            .then(endereco => {
-                if ("message" in endereco) {
-                    alert(endereco.message)
-                } else {
-                    document.querySelector('#cadastroLogradouro').value = endereco.logradouro;
-                    document.querySelector('#cadastroCidade').value = endereco.localidade;
-                    document.querySelector('#cadastroUf').value = endereco.uf;
-                }
-            }).catch(err => {
-                alert("Ocorreu um erro não tratado");
-                console.log(err);
-            });
+        $.getJSON(finalURL, function (endereco) {
+            $('#cadastroLogradouro').val(endereco.logradouro);
+            $('#cadastroCidade').val(endereco.localidade);
+            $('#cadastroUf').val(endereco.uf);
+        }).fail(function(response) {
+            console.log(response)
+            alert(response.responseJSON.message)
+        });
     }
 }
 /* FIM PREENCHER ENDEREÇO */
